@@ -1,6 +1,6 @@
 # VST Manager #
 
-VST Manager is a program which automates the process of downloading and installing [VST plug-ins](https://en.wikipedia.org/wiki/Virtual_Studio_Technology "VST plug-ins") from specially-crafted web sites called "VST Stores". (VST is a trademark of [Steinberg Media Technologies GmbH](https://www.steinberg.net "Steinberg").
+VST Manager is a program which automates the process of downloading and installing [VST plug-ins](https://en.wikipedia.org/wiki/Virtual_Studio_Technology "VST plug-ins") from specially-crafted web sites called "VST Stores". (VST is a trademark of [Steinberg Media Technologies GmbH](https://www.steinberg.net "Steinberg").)
 
 For example, browse to the VST Store at [http://getdunne.net/Krakli/](http://getdunne.net/Krakli/). This web site presents information about a large number of free VST plug-ins. There is a page for each plug-in, which includes a screen shot image, some additional information, and a download link. To install a VST, you need to find and then click its download link, then locate the downloaded .zip archive, unzip it, and move the files to wherever you keep VSTs.
 
