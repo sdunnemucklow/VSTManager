@@ -18,7 +18,7 @@ If the folder you define does not yet exist, VST Manager will ask if you want it
 
 ## Downloading and installing VST Manager ##
 
-VST Manager is open-source software, distributed under the MIT License. If you don't want to download the source code and compile it yourself, you can download a pre-built version using [this link](http://getdunne.net/download/VSTManager.exe). There is no formal installer; you simplly put the *VSTManager.exe* file wherever you want, and run it by double-clicking its icon. It's best to put it into a folder all by itself, because the program needs to create some files in that folder. Make sure to put this folder into a location where you have write privileges--your Desktop is a good choice.
+VST Manager is open-source software, distributed under the MIT License. If you don't want to download the source code and compile it yourself, you can download a pre-built version using [this link](http://getdunne.net/download/VSTManager.exe). There is no formal installer; you simply put the *VSTManager.exe* file wherever you want, and run it by double-clicking its icon. It's best to put it into a folder all by itself, because the program needs to create some files in that folder. Make sure to put this folder into a location where you have write privileges--your Desktop is a good choice.
 
 ## A tour through the VST Manager GUI ##
 
@@ -39,7 +39,7 @@ Enter a filepath in the box and press the "Select" button to see all VSTs curren
 button will remove that folder from the list and unlink all VSTs in that folder from NetVST, although they can still be accessed if the folder is added again.
 
 **Local tab - Installed VSTs box**
-A list of all VSTs installed using NetVST in the selected folder. you can select as many as you like, or select/deselect all using the buttons underneath. The "Uninstall" button will uninstall the checked VSTs, and the "Reinstall" button will reinstall the selected VSTs.
+A list of all VSTs installed using NetVST in the selected folder. You can select as many as you like, or select/deselect all using the buttons underneath. The "Uninstall" button will uninstall the checked VSTs, and the "Reinstall" button will reinstall the selected VSTs.
 
 ## Some details ##
 
