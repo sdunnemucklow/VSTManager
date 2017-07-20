@@ -20,7 +20,7 @@ If the folder you define does not yet exist, VST Manager will ask if you want it
 
 VST Manager is open-source software, distributed under the MIT License. If you don't want to download the source code and compile it yourself, you can download a pre-built version using [this link](https://github.com/sdunnemucklow/VSTManager/blob/master/prebuilt/VSTManager.exe?raw=true). There is no formal installer; you simply put the *VSTManager.exe* file wherever you want, and run it by double-clicking its icon. It's best to put it into a folder all by itself, because the program needs to create some files in that folder. Make sure to put this folder into a location where you have write privileges--your Desktop is a good choice.
 
-You probably already have one or more VST folders on your PC, but VST Manager won't know about these or be able to manage their contents. It's best to create new folder(s) for working with VST Manager.
+You probably already have one or more VST folders on your PC, but VST Manager won't know about these or be able to manage their contents. It's best to create new VST folder(s) for use with VST Manager.
 
 ## A tour through the VST Manager GUI ##
 
