@@ -522,6 +522,11 @@ namespace VSTManager
                 }
             }
 
+            if (!File.Exists(G.LocalPath + "local.csv"))
+            {
+                File.Create(G.LocalPath + "local.csv").Close();
+            }
+
             // add the new install path to locations.csv
             List<string> locationList = new List<string>();
             AddToCsv("locations.csv", G.LocalPath);

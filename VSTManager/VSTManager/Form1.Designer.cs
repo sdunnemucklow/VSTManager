@@ -45,7 +45,7 @@ namespace VSTManager
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.browseButton = new System.Windows.Forms.Button();
             this.locationRemoveButton = new System.Windows.Forms.Button();
-            this.locationConnectButton = new System.Windows.Forms.Button();
+            this.locationSelectButton = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.locationBox = new System.Windows.Forms.ComboBox();
             this.localDeselectAllButton = new System.Windows.Forms.Button();
@@ -184,7 +184,7 @@ namespace VSTManager
             // 
             this.tabPage2.Controls.Add(this.browseButton);
             this.tabPage2.Controls.Add(this.locationRemoveButton);
-            this.tabPage2.Controls.Add(this.locationConnectButton);
+            this.tabPage2.Controls.Add(this.locationSelectButton);
             this.tabPage2.Controls.Add(this.label5);
             this.tabPage2.Controls.Add(this.locationBox);
             this.tabPage2.Controls.Add(this.localDeselectAllButton);
@@ -222,15 +222,15 @@ namespace VSTManager
             this.locationRemoveButton.UseVisualStyleBackColor = true;
             this.locationRemoveButton.Click += new System.EventHandler(this.locationRemoveButton_Click);
             // 
-            // locationConnectButton
+            // locationSelectButton
             // 
-            this.locationConnectButton.Location = new System.Drawing.Point(318, 30);
-            this.locationConnectButton.Name = "locationConnectButton";
-            this.locationConnectButton.Size = new System.Drawing.Size(75, 23);
-            this.locationConnectButton.TabIndex = 15;
-            this.locationConnectButton.Text = "Select";
-            this.locationConnectButton.UseVisualStyleBackColor = true;
-            this.locationConnectButton.Click += new System.EventHandler(this.locationSelectButton_Click);
+            this.locationSelectButton.Location = new System.Drawing.Point(318, 30);
+            this.locationSelectButton.Name = "locationSelectButton";
+            this.locationSelectButton.Size = new System.Drawing.Size(75, 23);
+            this.locationSelectButton.TabIndex = 15;
+            this.locationSelectButton.Text = "Select";
+            this.locationSelectButton.UseVisualStyleBackColor = true;
+            this.locationSelectButton.Click += new System.EventHandler(this.locationSelectButton_Click);
             // 
             // label5
             // 
@@ -375,7 +375,7 @@ namespace VSTManager
         private System.Windows.Forms.Label installLabel;
         private System.Windows.Forms.Button localDeselectAllButton;
         private System.Windows.Forms.Button locationRemoveButton;
-        private System.Windows.Forms.Button locationConnectButton;
+        private System.Windows.Forms.Button locationSelectButton;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox locationBox;
         private System.Windows.Forms.Button browseButton;
