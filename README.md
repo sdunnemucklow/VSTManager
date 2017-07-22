@@ -49,6 +49,28 @@ VST Store web sites provide a downloadable text file called *store.csv* which co
 
 In each VST folder you define, VST Manager will create a file called *local.csv* which contains details about each of the VSTs you have installed into that folder. Each VST is installed into its own sub-folder (whose name is usually the same as, or similar to, the VST name), which contains that VST's *.dll* file(s) and any other files/folders that VST requires. This approach is not only tidy; it is what enables the program's *uninstall* capability. Uninstalling a VST simply means deleting that VST's whole folder, and also removing the line describing it from the *local.csv* file.
 
+## Creating a compatible web site ##
+Any web site that hosts freely-downloadable VSTs can be made compatible with the VST Manager program, by adding a single text file called *store.csv* in the site's top-level folder, so that simply appending "store.csv" to the site's base URL creates a valid URL for downloading the *store.csv* file.
+
+The *store.csv* data file is like a simple database with one table. It's a simple text file (preferably using the UTF-8 encoding, which allows you to use e.g. accented characters). The first line is a list of "column names" separated by commas. Subsequent lines are comma-separated lists of values for each column; these correspond to individual records in a database.
+
+The meaning of the columns is as follows:
+
+| Column name | Meaning |
+| ----------- | ------- |
+| name | Name of the VST |
+| creator | Who created/published it |
+| folder | Folder name (see below) |
+| url | Link to download URL |
+| tags | List of descriptive tags separated by stile ("pipe") characters |
+| desc | Short description of VST in a few words |
+| refurl | Link to creator's original page, for more information |
+
+Each download url (in the url column) should link to a downloadable *.zip* file, which contains exactly one folder, whose name is given in the folder column. Everything the VST needs to run (32-bit and/or 64-bit *.dll* files, *.fxb/.fxp* patch files, etc.) should be inside that one folder.
+
+Following these conventions exactly ensures that the VST Manager program can be used to simplify the process of downloading, installing, updating, or uninstalling your VSTs.
+
+
 ## If you run into trouble ##
 
 If you need further assistance, contact the author: samdm {at} kingston {dot} net.
