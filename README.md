@@ -50,7 +50,7 @@ VST Store web sites provide a downloadable text file called *store.csv* which co
 In each VST folder you define, VST Manager will create a file called *local.csv* which contains details about each of the VSTs you have installed into that folder. Each VST is installed into its own sub-folder (whose name is usually the same as, or similar to, the VST name), which contains that VST's *.dll* file(s) and any other files/folders that VST requires. This approach is not only tidy; it is what enables the program's *uninstall* capability. Uninstalling a VST simply means deleting that VST's whole folder, and also removing the line describing it from the *local.csv* file.
 
 ## Creating a VST Store web site ##
-Any web site that hosts freely-downloadable VSTs can be made compatible with the VST Manager program, by adding a single text file called *store.csv* in the site's top-level folder, so that simply appending "store.csv" to the site's base URL creates a valid URL for downloading the *store.csv* file.
+Any web site that hosts freely-downloadable VSTs can be made compatible with the VST Manager program, by adding a single text file called *store.csv* in the site's top-level folder, so that its URL can be formed by simply appending "store.csv" to the site's base URL.
 
 The *store.csv* data file is like a simple database with one table. It's a simple text file (preferably using the UTF-8 encoding, which allows you to use e.g. accented characters). The first line is a list of "column names" separated by commas. Subsequent lines are comma-separated lists of values for each column; these correspond to individual records in a database.
 
