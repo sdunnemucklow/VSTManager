@@ -38,11 +38,11 @@ namespace VSTManager
             this.label2 = new System.Windows.Forms.Label();
             this.removeButton = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.storeTabPage = new System.Windows.Forms.TabPage();
             this.storeDeselectAllButton = new System.Windows.Forms.Button();
             this.storeSelectAllButton = new System.Windows.Forms.Button();
             this.storeVstBox = new System.Windows.Forms.CheckedListBox();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.localTabPage = new System.Windows.Forms.TabPage();
             this.browseButton = new System.Windows.Forms.Button();
             this.locationRemoveButton = new System.Windows.Forms.Button();
             this.locationSelectButton = new System.Windows.Forms.Button();
@@ -55,10 +55,9 @@ namespace VSTManager
             this.label4 = new System.Windows.Forms.Label();
             this.localVstBox = new System.Windows.Forms.CheckedListBox();
             this.installLabel = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
+            this.storeTabPage.SuspendLayout();
+            this.localTabPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // installButton
@@ -74,7 +73,7 @@ namespace VSTManager
             // storesBox
             // 
             this.storesBox.FormattingEnabled = true;
-            this.storesBox.Location = new System.Drawing.Point(22, 33);
+            this.storesBox.Location = new System.Drawing.Point(22, 31);
             this.storesBox.Name = "storesBox";
             this.storesBox.Size = new System.Drawing.Size(257, 21);
             this.storesBox.TabIndex = 3;
@@ -121,8 +120,8 @@ namespace VSTManager
             // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.localTabPage);
+            this.tabControl1.Controls.Add(this.storeTabPage);
             this.tabControl1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
@@ -130,25 +129,25 @@ namespace VSTManager
             this.tabControl1.Size = new System.Drawing.Size(560, 461);
             this.tabControl1.TabIndex = 9;
             // 
-            // tabPage1
+            // storeTabPage
             // 
-            this.tabPage1.Controls.Add(this.storeDeselectAllButton);
-            this.tabPage1.Controls.Add(this.storeSelectAllButton);
-            this.tabPage1.Controls.Add(this.storeVstBox);
-            this.tabPage1.Controls.Add(this.storesBox);
-            this.tabPage1.Controls.Add(this.removeButton);
-            this.tabPage1.Controls.Add(this.installButton);
-            this.tabPage1.Controls.Add(this.label2);
-            this.tabPage1.Controls.Add(this.connectButton);
-            this.tabPage1.Controls.Add(this.label1);
-            this.tabPage1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.tabPage1.Location = new System.Drawing.Point(4, 29);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(552, 428);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Store";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.storeTabPage.Controls.Add(this.storeDeselectAllButton);
+            this.storeTabPage.Controls.Add(this.storeSelectAllButton);
+            this.storeTabPage.Controls.Add(this.storeVstBox);
+            this.storeTabPage.Controls.Add(this.storesBox);
+            this.storeTabPage.Controls.Add(this.removeButton);
+            this.storeTabPage.Controls.Add(this.installButton);
+            this.storeTabPage.Controls.Add(this.label2);
+            this.storeTabPage.Controls.Add(this.connectButton);
+            this.storeTabPage.Controls.Add(this.label1);
+            this.storeTabPage.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.storeTabPage.Location = new System.Drawing.Point(4, 29);
+            this.storeTabPage.Name = "storeTabPage";
+            this.storeTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.storeTabPage.Size = new System.Drawing.Size(552, 428);
+            this.storeTabPage.TabIndex = 0;
+            this.storeTabPage.Text = "Store";
+            this.storeTabPage.UseVisualStyleBackColor = true;
             // 
             // storeDeselectAllButton
             // 
@@ -180,27 +179,27 @@ namespace VSTManager
             this.storeVstBox.Size = new System.Drawing.Size(385, 298);
             this.storeVstBox.TabIndex = 9;
             // 
-            // tabPage2
+            // localTabPage
             // 
-            this.tabPage2.Controls.Add(this.browseButton);
-            this.tabPage2.Controls.Add(this.locationRemoveButton);
-            this.tabPage2.Controls.Add(this.locationSelectButton);
-            this.tabPage2.Controls.Add(this.label5);
-            this.tabPage2.Controls.Add(this.locationBox);
-            this.tabPage2.Controls.Add(this.localDeselectAllButton);
-            this.tabPage2.Controls.Add(this.localSelectAllButton);
-            this.tabPage2.Controls.Add(this.uninstallButton);
-            this.tabPage2.Controls.Add(this.reinstallButton);
-            this.tabPage2.Controls.Add(this.label4);
-            this.tabPage2.Controls.Add(this.localVstBox);
-            this.tabPage2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.tabPage2.Location = new System.Drawing.Point(4, 29);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(552, 428);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Local";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.localTabPage.Controls.Add(this.browseButton);
+            this.localTabPage.Controls.Add(this.locationRemoveButton);
+            this.localTabPage.Controls.Add(this.locationSelectButton);
+            this.localTabPage.Controls.Add(this.label5);
+            this.localTabPage.Controls.Add(this.locationBox);
+            this.localTabPage.Controls.Add(this.localDeselectAllButton);
+            this.localTabPage.Controls.Add(this.localSelectAllButton);
+            this.localTabPage.Controls.Add(this.uninstallButton);
+            this.localTabPage.Controls.Add(this.reinstallButton);
+            this.localTabPage.Controls.Add(this.label4);
+            this.localTabPage.Controls.Add(this.localVstBox);
+            this.localTabPage.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.localTabPage.Location = new System.Drawing.Point(4, 29);
+            this.localTabPage.Name = "localTabPage";
+            this.localTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.localTabPage.Size = new System.Drawing.Size(552, 428);
+            this.localTabPage.TabIndex = 1;
+            this.localTabPage.Text = "Local";
+            this.localTabPage.UseVisualStyleBackColor = true;
             // 
             // browseButton
             // 
@@ -245,7 +244,7 @@ namespace VSTManager
             // locationBox
             // 
             this.locationBox.FormattingEnabled = true;
-            this.locationBox.Location = new System.Drawing.Point(22, 33);
+            this.locationBox.Location = new System.Drawing.Point(22, 31);
             this.locationBox.Name = "locationBox";
             this.locationBox.Size = new System.Drawing.Size(257, 21);
             this.locationBox.TabIndex = 13;
@@ -312,22 +311,11 @@ namespace VSTManager
             // 
             // installLabel
             // 
-            this.installLabel.AutoSize = true;
             this.installLabel.Location = new System.Drawing.Point(35, 490);
             this.installLabel.Name = "installLabel";
-            this.installLabel.Size = new System.Drawing.Size(150, 13);
+            this.installLabel.Size = new System.Drawing.Size(502, 21);
             this.installLabel.TabIndex = 13;
             this.installLabel.Text = "No install currently in progress.";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
-            this.label3.Location = new System.Drawing.Point(209, 9);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(157, 24);
-            this.label3.TabIndex = 10;
-            this.label3.Text = "VST Manager 1.0";
             // 
             // Form1
             // 
@@ -335,7 +323,6 @@ namespace VSTManager
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 512);
             this.Controls.Add(this.installLabel);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this.tabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -344,12 +331,11 @@ namespace VSTManager
             this.Text = "VST Manager";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
+            this.storeTabPage.ResumeLayout(false);
+            this.storeTabPage.PerformLayout();
+            this.localTabPage.ResumeLayout(false);
+            this.localTabPage.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -361,10 +347,9 @@ namespace VSTManager
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button removeButton;
         private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage storeTabPage;
+        private System.Windows.Forms.TabPage localTabPage;
         private System.Windows.Forms.CheckedListBox storeVstBox;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckedListBox localVstBox;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button storeSelectAllButton;

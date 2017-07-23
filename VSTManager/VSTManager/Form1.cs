@@ -24,6 +24,9 @@ namespace VSTManager
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            // Display product name and version in title bar
+            this.Text = String.Format("VST Manager {0}", Application.ProductVersion);
+            
             // create necessary CSV files
             if (!File.Exists("past_stores.csv"))
             {
