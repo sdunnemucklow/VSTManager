@@ -74,3 +74,12 @@ Following these conventions exactly ensures that the VST Manager program can be 
 ## If you run into trouble ##
 
 If you need further assistance, contact the author: samdm {at} kingston {dot} net.
+
+
+## List of compatible web stores ##
+
+The following web sites with free VSTs are compatible with VST Manager. (If you know of others, please let me know so I can expand this list.)
+- [FullBucket](https://www.fullbucket.de/music "FullBucket.de")
+- [Krakli Plugins](http://getdunne.net/Krakli "Krakli Plugins Repository")
+- [GyL Synths](http://getdunne.net/GyL "GyL Synths VST collection")
+
