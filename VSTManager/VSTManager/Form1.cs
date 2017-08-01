@@ -281,7 +281,7 @@ namespace VSTManager
             //set G.CurrentStoreUrl based on storesBox.Text
             G.CurrentStoreUrl = storesBox.Text;
 
-            if (G.CurrentStoreUrl.Length < 7 || G.CurrentStoreUrl.Substring(0, 7) != "http://")
+            if (G.CurrentStoreUrl.Length < 7 || G.CurrentStoreUrl.Substring(0, 4) != "http")
             {
                 G.CurrentStoreUrl = "http://" + G.CurrentStoreUrl;
             }
