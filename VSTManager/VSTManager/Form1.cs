@@ -48,9 +48,9 @@ namespace VSTManager
             // create local.csv in all user-chosen directories if they don't already exist
             foreach (string s in locationList)
             {
-                if (!File.Exists(s + "local.csv"))
+                if (!File.Exists(Path.Combine(s, "local.csv")))
                 {
-                    File.Create(s + "local.csv").Close();
+                    File.Create(Path.Combine(s, "local.csv")).Close();
                 }
             }
         }
@@ -197,10 +197,11 @@ namespace VSTManager
 
         private int DownloadExtract(string FileName, string DownloadURL)
         {
+            string FullPath = Path.Combine(G.LocalPath, FileName);
             // remove the zip file if it was left there
-            if (File.Exists(G.LocalPath + FileName + ".zip"))
+            if (File.Exists(FullPath + ".zip"))
             {
-                File.Delete(G.LocalPath + FileName + ".zip");
+                File.Delete(FullPath + ".zip");
             }
 
             // download the file
@@ -208,7 +209,7 @@ namespace VSTManager
             {
                 try
                 {
-                    client.DownloadFile(new Uri(DownloadURL), G.LocalPath + FileName + ".zip");
+                    client.DownloadFile(new Uri(DownloadURL), FullPath + ".zip");
                 }
                 catch
                 {
@@ -217,33 +218,33 @@ namespace VSTManager
             }
 
             // if it's already there, move it somewhere else temporarily, but move it back if the installation fails
-            if (Directory.Exists(G.LocalPath + FileName))
+            if (Directory.Exists(FullPath))
             {
-                Directory.Move(G.LocalPath + FileName, G.LocalPath + FileName + "_old");
+                Directory.Move(FullPath, FullPath + "_old");
             }
             try
             {
-                System.IO.Compression.ZipFile.ExtractToDirectory(G.LocalPath + FileName + ".zip", G.LocalPath);
+                System.IO.Compression.ZipFile.ExtractToDirectory(FullPath + ".zip", G.LocalPath);
             }
             catch
             {
-                if (File.Exists(G.LocalPath + FileName + ".zip"))
+                if (File.Exists(FullPath + ".zip"))
                 {
-                    File.Delete(G.LocalPath + FileName + ".zip");
+                    File.Delete(FullPath + ".zip");
                 }
-                if (Directory.Exists(G.LocalPath + FileName + "_old"))
+                if (Directory.Exists(FullPath + "_old"))
                 {
-                    Directory.Move(G.LocalPath + FileName + "_old", G.LocalPath + FileName);
+                    Directory.Move(FullPath + "_old", FullPath);
                 }
                 return 1;
             }
-            if (File.Exists(G.LocalPath + FileName + ".zip"))
+            if (File.Exists(FullPath + ".zip"))
             {
-                File.Delete(G.LocalPath + FileName + ".zip");
+                File.Delete(FullPath + ".zip");
             }
-            if (Directory.Exists(G.LocalPath + FileName + "_old"))
+            if (Directory.Exists(FullPath + "_old"))
             {
-                Directory.Delete(G.LocalPath + FileName + "_old", true);
+                Directory.Delete(FullPath + "_old", true);
             }
             return 0;
         }
@@ -362,10 +363,10 @@ namespace VSTManager
                     continue;
                 }
                 string csvLine = G.StoreVstList[i].Aggregate((x, y) => x + "," + y);
-                AddToCsv(G.LocalPath + "local.csv", csvLine);
+                AddToCsv(Path.Combine(G.LocalPath, "local.csv"), csvLine);
                 storeVstBox.SetItemChecked(i, false);
             }
-            ReadCsvToList(G.LocalPath + "local.csv", G.LocalVstList);
+            ReadCsvToList(Path.Combine(G.LocalPath, "local.csv"), G.LocalVstList);
             //populate localVstBox based on G.LocalVstList
             PopulateCheckedBox(G.LocalVstList, localVstBox);
             if (!someFailed)
@@ -432,15 +433,15 @@ namespace VSTManager
             {
                 try
                 {
-                    Directory.Delete(G.LocalPath + l[2], true);
+                    Directory.Delete(Path.Combine(G.LocalPath, l[2]), true);
                 }
                 catch
                 {
                     MessageBox.Show("The folder for " + l[0] + " could not be found. Please delete it manually.");
                 }
                 string csvLine = l.Aggregate((x, y) => x + "," + y);
-                DeleteFromCsv(G.LocalPath + "local.csv", csvLine);
-                ReadCsvToList(G.LocalPath + "local.csv", G.LocalVstList);
+                DeleteFromCsv(Path.Combine(G.LocalPath, "local.csv"), csvLine);
+                ReadCsvToList(Path.Combine(G.LocalPath, "local.csv"), G.LocalVstList);
                 PopulateCheckedBox(G.LocalVstList, localVstBox);
             }
         }
@@ -493,10 +494,10 @@ namespace VSTManager
             string oldPath = G.LocalPath;
             G.LocalPath = locationBox.Text;
 
-            // add a backlash onto the end if there isn't one
-            if (G.LocalPath[G.LocalPath.Length - 1] != '\\')
+            // remove the backlash at the end if there is one
+            if (G.LocalPath[G.LocalPath.Length - 1] == '\\')
             {
-                G.LocalPath = G.LocalPath + @"\";
+                G.LocalPath = G.LocalPath.Substring(0, G.LocalPath.Length - 1);
             }
 
             // ask the user to create the directory (also creates the local CSV file) if it doesn't exist
@@ -516,7 +517,7 @@ namespace VSTManager
                         G.LocalPath = oldPath;
                         return;
                     }
-                    File.Create(G.LocalPath + "local.csv").Close();
+                    File.Create(Path.Combine(G.LocalPath, "local.csv")).Close();
                 }
                 else if (dr == DialogResult.No)
                 {
@@ -525,9 +526,9 @@ namespace VSTManager
                 }
             }
 
-            if (!File.Exists(G.LocalPath + "local.csv"))
+            if (!File.Exists(Path.Combine(G.LocalPath, "local.csv")))
             {
-                File.Create(G.LocalPath + "local.csv").Close();
+                File.Create(Path.Combine(G.LocalPath, "local.csv")).Close();
             }
 
             // add the new install path to locations.csv
@@ -537,7 +538,7 @@ namespace VSTManager
             PopulateComboBox(locationList, locationBox);
 
             // read the local CSV file to get the VSTs, and list them in the local checked box
-            ReadCsvToList(G.LocalPath + "local.csv", G.LocalVstList);
+            ReadCsvToList(Path.Combine(G.LocalPath, "local.csv"), G.LocalVstList);
             PopulateCheckedBox(G.LocalVstList, localVstBox);
         }
 
@@ -577,7 +578,7 @@ namespace VSTManager
 
                 if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
                 {
-                    locationBox.Text = fbd.SelectedPath + @"\";
+                    locationBox.Text = fbd.SelectedPath;
                 }
             }
         }
