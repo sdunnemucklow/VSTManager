@@ -224,7 +224,7 @@ namespace VSTManager
             }
             try
             {
-                System.IO.Compression.ZipFile.ExtractToDirectory(FullPath + ".zip", G.LocalPath);
+                System.IO.Compression.ZipFile.ExtractToDirectory(FullPath + ".zip", FullPath);
             }
             catch
             {
