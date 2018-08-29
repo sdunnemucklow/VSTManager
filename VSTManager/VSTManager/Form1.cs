@@ -224,7 +224,7 @@ namespace VSTManager
             }
             try
             {
-                System.IO.Compression.ZipFile.ExtractToDirectory(FullPath + ".zip", G.LocalPath);
+                System.IO.Compression.ZipFile.ExtractToDirectory(FullPath + ".zip", FullPath);
             }
             catch
             {
@@ -300,6 +300,8 @@ namespace VSTManager
             {
                 using (var client = new WebClient())
                 {
+                    // See https://stackoverflow.com/questions/39307684/webclient-error-when-downloading-file-from-https-url
+                    System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
                     client.DownloadFile(new Uri(G.CurrentStoreUrl + "store.csv"), "store.csv");
                 }
             }
