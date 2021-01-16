@@ -2,21 +2,27 @@
 
 using System;
 using System.Collections.Generic;
-//using System.ComponentModel;
-//using System.Data;
-//using System.Drawing;
 using System.Linq;
 using System.Net;
-//using System.Text;
-//using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
-//using System.IO.Compression;
 
 namespace VSTManager
 {
     public partial class Form1 : Form
     {
+        // URL for the store the user is currently browsing
+        public string CurrentStoreUrl = "https://getdunne.net/Krakli/";
+
+        // The list of VSTs available from the current store. Each VST is itself represented by a list of attributes, so it's a nested list
+        public List<List<string>> StoreVstList = new List<List<string>>();
+
+        // The list of VSTs already installed by the user in the current VST directory, also a nested list
+        public List<List<string>> LocalVstList = new List<List<string>>();
+
+        // The user's currently selected VST directory
+        public string LocalPath;
+
         public Form1()
         {
             InitializeComponent();
@@ -24,10 +30,9 @@ namespace VSTManager
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            // Display product name and version in title bar
             this.Text = String.Format("VST Manager {0}", Application.ProductVersion);
             
-            // create necessary CSV files
+            // Read or create the CSV files containing lists of past stores visited and VST directories
             if (!File.Exists("past_stores.csv"))
             {
                 File.Create("past_stores.csv").Close();
@@ -39,10 +44,10 @@ namespace VSTManager
 
             // read the CSV files and populate the combo boxes
             List<string> storesList = new List<string>();
-            ReadCsvToList("past_stores.csv", storesList);
+            ReadCsvToSimpleList("past_stores.csv", storesList);
             PopulateComboBox(storesList, storesBox);
             List<string> locationList = new List<string>();
-            ReadCsvToList("locations.csv", locationList);
+            ReadCsvToSimpleList("locations.csv", locationList);
             PopulateComboBox(locationList, locationBox);
 
             // create local.csv in all user-chosen directories if they don't already exist
@@ -55,44 +60,10 @@ namespace VSTManager
             }
         }
 
-        static class G
-        {
-            // global variables
-
-            private static string _currentStoreUrl = "http://getdunne.net/Krakli/";
-            public static string CurrentStoreUrl
-            {
-                get { return _currentStoreUrl; }
-                set { _currentStoreUrl = value; }
-            }
-
-            private static List<List<string>> _storeVstList = new List<List<string>>();
-            public static List<List<string>> StoreVstList
-            {
-                get { return _storeVstList; }
-                set { _storeVstList = value; }
-            }
-
-            private static List<List<string>> _localVstList = new List<List<string>>();
-            public static List<List<string>> LocalVstList
-            {
-                get { return _localVstList; }
-                set { _localVstList = value; }
-            }
-
-            private static string _localPath;
-            public static string LocalPath
-            {
-                get { return _localPath; }
-                set { _localPath = value; }
-            }
-        }
-
-        private void ReadCsvToList(string csvPath, List<List<string>> csvList)
+        private void ReadCsvToNestedList(string csvPath, List<List<string>> csvList)
         {
             csvList.Clear();
 
-            // read the CSV into a list of lists
             try
             {
                 using (var reader = new StreamReader(csvPath))
@@ -123,11 +94,11 @@ namespace VSTManager
                 MessageBox.Show("The CSV could not be read.");
             }
         }
-        private void ReadCsvToList(string csvPath, List<string> csvList)
+
+        private void ReadCsvToSimpleList(string csvPath, List<string> csvList)
         {
             csvList.Clear();
 
-            // read the CSV into a list of strings
             try
             {
                 using (var reader = new StreamReader(csvPath))
@@ -146,7 +117,8 @@ namespace VSTManager
             }
         }
 
-        private void AddToCsv(string csvPath, string lineToAdd)
+        // Add a line to a CSV, unless an identical line is already in the file
+        private void AddLineToCsvFile(string csvPath, string lineToAdd)
         {
             bool alreadyExists = false;
             if (File.Exists(csvPath))
@@ -178,9 +150,9 @@ namespace VSTManager
             }
         }
 
-        public void DeleteFromCsv(string csvPath, string lineToDelete)
+        public void DeleteLineFromCsvFile(string csvPath, string lineToDelete)
         {
-            // rewrite the CSV without the specific line to delete
+            // Rewrite the CSV without the specific line to delete
             string[] values = File.ReadAllLines(csvPath);
             StreamWriter Writer = new StreamWriter(csvPath, false);
 
@@ -195,9 +167,9 @@ namespace VSTManager
             Writer.Close();
         }
 
-        private int DownloadExtract(string FileName, string DownloadURL)
+        private int DownloadAndExtractZipFile(string FileName, string DownloadURL)
         {
-            string FullPath = Path.Combine(G.LocalPath, FileName);
+            string FullPath = Path.Combine(LocalPath, FileName);
             // remove the zip file if it was left there
             if (File.Exists(FullPath + ".zip"))
             {
@@ -279,19 +251,19 @@ namespace VSTManager
                 return;
             }
 
-            //set G.CurrentStoreUrl based on storesBox.Text
-            G.CurrentStoreUrl = storesBox.Text;
+            //set CurrentStoreUrl based on storesBox.Text
+            CurrentStoreUrl = storesBox.Text;
 
-            if (G.CurrentStoreUrl.Length < 7 || G.CurrentStoreUrl.Substring(0, 4) != "http")
+            if (CurrentStoreUrl.Length < 7 || CurrentStoreUrl.Substring(0, 4) != "http")
             {
-                G.CurrentStoreUrl = "http://" + G.CurrentStoreUrl;
+                CurrentStoreUrl = "http://" + CurrentStoreUrl;
             }
-            if (G.CurrentStoreUrl[G.CurrentStoreUrl.Length - 1] != '/')
+            if (CurrentStoreUrl[CurrentStoreUrl.Length - 1] != '/')
             {
-                G.CurrentStoreUrl = G.CurrentStoreUrl + "/";
+                CurrentStoreUrl = CurrentStoreUrl + "/";
             }
 
-            //download the store CSV from G.CurrentStoreUrl to store.csv
+            //download the store CSV from CurrentStoreUrl to store.csv
             if (File.Exists("store.csv"))
             {
                 File.Delete("store.csv");
@@ -302,21 +274,21 @@ namespace VSTManager
                 {
                     // See https://stackoverflow.com/questions/39307684/webclient-error-when-downloading-file-from-https-url
                     System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
-                    client.DownloadFile(new Uri(G.CurrentStoreUrl + "store.csv"), "store.csv");
+                    client.DownloadFile(new Uri(CurrentStoreUrl + "store.csv"), "store.csv");
                 }
             }
             catch
             {
-                MessageBox.Show(G.CurrentStoreUrl + " is not a valid store.");
+                MessageBox.Show(CurrentStoreUrl + " is not a valid store.");
                 return;
             }
-            //read store.csv into G.StoreVstList
-            ReadCsvToList("store.csv", G.StoreVstList);
-            //populate storeVstBox based on G.StoreVstList
-            PopulateCheckedBox(G.StoreVstList, storeVstBox);
-            storesBox.Items.Add(G.CurrentStoreUrl);
+            //read store.csv into StoreVstList
+            ReadCsvToNestedList("store.csv", StoreVstList);
+            //populate storeVstBox based on StoreVstList
+            PopulateCheckedBox(StoreVstList, storeVstBox);
+            storesBox.Items.Add(CurrentStoreUrl);
             //add the store to past_stores.csv
-            AddToCsv("past_stores.csv", G.CurrentStoreUrl);
+            AddLineToCsvFile("past_stores.csv", CurrentStoreUrl);
         }
 
         private void removeButton_Click(object sender, EventArgs e)
@@ -331,46 +303,46 @@ namespace VSTManager
             {
                 urlToDelete = urlToDelete + "/";
             }
-            DeleteFromCsv("past_stores.csv", urlToDelete);
+            DeleteLineFromCsvFile("past_stores.csv", urlToDelete);
             List<string> storesList = new List<string>();
-            ReadCsvToList("past_stores.csv", storesList);
+            ReadCsvToSimpleList("past_stores.csv", storesList);
             PopulateComboBox(storesList, storesBox);
             storesBox.Text = "";
         }
 
         private void installButton_Click(object sender, EventArgs e)
         {
-            if (G.LocalPath == null)
+            if (LocalPath == null)
             {
                 MessageBox.Show("Please select a destination folder first in the Local tab.");
                 return;
             }
 
-            //using G.StoreVstList, download and extract all of the VSTs
-            //for each new vst, add to G.LocalVstList
+            //using StoreVstList, download and extract all of the VSTs
+            //for each new vst, add to LocalVstList
             bool someFailed = false;
             foreach (int i in storeVstBox.CheckedIndices)
             {
                 if (new FileInfo("locations.csv").Length == 0)
                 {
-                    G.LocalPath = @"C:\VST\";
+                    LocalPath = @"C:\VST\";
                 }
-                installLabel.Text = "Installing " + G.StoreVstList[i][0];
+                installLabel.Text = "Installing " + StoreVstList[i][0];
                 installLabel.Refresh();
-                int result = DownloadExtract(G.StoreVstList[i][2], G.StoreVstList[i][3]);
+                int result = DownloadAndExtractZipFile(StoreVstList[i][2], StoreVstList[i][3]);
                 if (result == 1)
                 {
-                    MessageBox.Show("An error occurred while installing " + G.StoreVstList[i][0] + ".");
+                    MessageBox.Show("An error occurred while installing " + StoreVstList[i][0] + ".");
                     someFailed = true;
                     continue;
                 }
-                string csvLine = G.StoreVstList[i].Aggregate((x, y) => x + "," + y);
-                AddToCsv(Path.Combine(G.LocalPath, "local.csv"), csvLine);
+                string csvLine = StoreVstList[i].Aggregate((x, y) => x + "," + y);
+                AddLineToCsvFile(Path.Combine(LocalPath, "local.csv"), csvLine);
                 storeVstBox.SetItemChecked(i, false);
             }
-            ReadCsvToList(Path.Combine(G.LocalPath, "local.csv"), G.LocalVstList);
-            //populate localVstBox based on G.LocalVstList
-            PopulateCheckedBox(G.LocalVstList, localVstBox);
+            ReadCsvToNestedList(Path.Combine(LocalPath, "local.csv"), LocalVstList);
+            //populate localVstBox based on LocalVstList
+            PopulateCheckedBox(LocalVstList, localVstBox);
             if (!someFailed)
             {
                 installLabel.Text = "All installations complete.";
@@ -383,16 +355,16 @@ namespace VSTManager
 
         private void reinstallButton_Click(object sender, EventArgs e)
         {
-            if (G.LocalPath == null)
+            if (LocalPath == null)
             {
                 return;
             }
 
-            //using localVstBox.CheckedIndices and G.LocalVstList, populate a list of the selected VSTs
+            //using localVstBox.CheckedIndices and LocalVstList, populate a list of the selected VSTs
             List<List<string>> vstList = new List<List<string>>();
             foreach (int i in localVstBox.CheckedIndices)
             {
-                vstList.Add(G.LocalVstList[i]);
+                vstList.Add(LocalVstList[i]);
             }
             //for each VST in the list, delete the file tree then download and extract based on the URL in the list
             bool someFailed = false;
@@ -400,7 +372,7 @@ namespace VSTManager
             {
                 installLabel.Text = "Installing " + l[0];
                 installLabel.Refresh();
-                int result = DownloadExtract(l[2], l[3]);
+                int result = DownloadAndExtractZipFile(l[2], l[3]);
                 if (result == 1)
                 {
                     MessageBox.Show("An error occurred while reinstalling " + l[0] + ".");
@@ -419,32 +391,32 @@ namespace VSTManager
 
         private void uninstallButton_Click(object sender, EventArgs e)
         {
-            if (G.LocalPath == null)
+            if (LocalPath == null)
             {
                 return;
             }
 
-            //using localVstBox.CheckedIndices and G.LocalVstList, populate a list of the selected VSTs
+            //using localVstBox.CheckedIndices and LocalVstList, populate a list of the selected VSTs
             List<List<string>> vstList = new List<List<string>>();
             foreach (int i in localVstBox.CheckedIndices)
             {
-                vstList.Add(G.LocalVstList[i]);
+                vstList.Add(LocalVstList[i]);
             }
             //for each VST in the list, delete the file tree then delete its entry from local.csv
             foreach (List<string> l in vstList)
             {
                 try
                 {
-                    Directory.Delete(Path.Combine(G.LocalPath, l[2]), true);
+                    Directory.Delete(Path.Combine(LocalPath, l[2]), true);
                 }
                 catch
                 {
                     MessageBox.Show("The folder for " + l[0] + " could not be found. Please delete it manually.");
                 }
                 string csvLine = l.Aggregate((x, y) => x + "," + y);
-                DeleteFromCsv(Path.Combine(G.LocalPath, "local.csv"), csvLine);
-                ReadCsvToList(Path.Combine(G.LocalPath, "local.csv"), G.LocalVstList);
-                PopulateCheckedBox(G.LocalVstList, localVstBox);
+                DeleteLineFromCsvFile(Path.Combine(LocalPath, "local.csv"), csvLine);
+                ReadCsvToNestedList(Path.Combine(LocalPath, "local.csv"), LocalVstList);
+                PopulateCheckedBox(LocalVstList, localVstBox);
             }
         }
 
@@ -493,55 +465,55 @@ namespace VSTManager
             }
 
             // set the new install path
-            string oldPath = G.LocalPath;
-            G.LocalPath = locationBox.Text;
+            string oldPath = LocalPath;
+            LocalPath = locationBox.Text;
 
             // remove the backlash at the end if there is one
-            if (G.LocalPath[G.LocalPath.Length - 1] == '\\')
+            if (LocalPath[LocalPath.Length - 1] == '\\')
             {
-                G.LocalPath = G.LocalPath.Substring(0, G.LocalPath.Length - 1);
+                LocalPath = LocalPath.Substring(0, LocalPath.Length - 1);
             }
 
             // ask the user to create the directory (also creates the local CSV file) if it doesn't exist
-            if (!Directory.Exists(G.LocalPath))
+            if (!Directory.Exists(LocalPath))
             {
-                DialogResult dr = MessageBox.Show(G.LocalPath + " does not exist. Create it?",
+                DialogResult dr = MessageBox.Show(LocalPath + " does not exist. Create it?",
                       "Create new directory?", MessageBoxButtons.YesNo);
                 if (dr == DialogResult.Yes)
                 {
                     try
                     {
-                        Directory.CreateDirectory(G.LocalPath);
+                        Directory.CreateDirectory(LocalPath);
                     }
                     catch
                     {
                         MessageBox.Show("The directory could not be created.");
-                        G.LocalPath = oldPath;
+                        LocalPath = oldPath;
                         return;
                     }
-                    File.Create(Path.Combine(G.LocalPath, "local.csv")).Close();
+                    File.Create(Path.Combine(LocalPath, "local.csv")).Close();
                 }
                 else if (dr == DialogResult.No)
                 {
-                    G.LocalPath = oldPath;
+                    LocalPath = oldPath;
                     return;
                 }
             }
 
-            if (!File.Exists(Path.Combine(G.LocalPath, "local.csv")))
+            if (!File.Exists(Path.Combine(LocalPath, "local.csv")))
             {
-                File.Create(Path.Combine(G.LocalPath, "local.csv")).Close();
+                File.Create(Path.Combine(LocalPath, "local.csv")).Close();
             }
 
             // add the new install path to locations.csv
             List<string> locationList = new List<string>();
-            AddToCsv("locations.csv", G.LocalPath);
-            ReadCsvToList("locations.csv", locationList);
+            AddLineToCsvFile("locations.csv", LocalPath);
+            ReadCsvToSimpleList("locations.csv", locationList);
             PopulateComboBox(locationList, locationBox);
 
             // read the local CSV file to get the VSTs, and list them in the local checked box
-            ReadCsvToList(Path.Combine(G.LocalPath, "local.csv"), G.LocalVstList);
-            PopulateCheckedBox(G.LocalVstList, localVstBox);
+            ReadCsvToNestedList(Path.Combine(LocalPath, "local.csv"), LocalVstList);
+            PopulateCheckedBox(LocalVstList, localVstBox);
         }
 
         private void locationRemoveButton_Click(object sender, EventArgs e)
@@ -560,15 +532,15 @@ namespace VSTManager
             {
                 pathToDelete = pathToDelete + @"\";
             }
-            DeleteFromCsv("locations.csv", pathToDelete);
+            DeleteLineFromCsvFile("locations.csv", pathToDelete);
             List<string> locationList = new List<string>();
-            ReadCsvToList("locations.csv", locationList);
+            ReadCsvToSimpleList("locations.csv", locationList);
             PopulateComboBox(locationList, locationBox);
 
             // reset the local path and checked box
             locationBox.Text = "";
             localVstBox.Items.Clear();
-            G.LocalPath = null;
+            LocalPath = null;
         }
 
         private void browseButton_Click(object sender, EventArgs e)
