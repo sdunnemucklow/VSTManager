@@ -1,3 +1,9 @@
+# Historical/Obsolete #
+
+This repository should be considered obsolete. I recommend [Open Audio Registry](https://github.com/open-audio-stack/open-audio-stack-registry) for new work.
+
+-----
+
 # VST Manager #
 
 VST Manager is a program which automates the process of downloading and installing [VST plug-ins](https://en.wikipedia.org/wiki/Virtual_Studio_Technology "VST plug-ins") from specially-crafted web sites called "VST Stores". (VST is a trademark of [Steinberg Media Technologies GmbH](https://www.steinberg.net "Steinberg").)
